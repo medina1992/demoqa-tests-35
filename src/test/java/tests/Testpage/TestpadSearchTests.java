@@ -23,7 +23,6 @@ public class TestpadSearchTests {
         open("https://onlinetestpad.com/ru/tests");
     }
 
-    // TC_WEB_1: Проверка, что при поиске появляется хотя бы один результат
     @ValueSource(strings = {"Java", "Python", "CSS"})
     @ParameterizedTest(name = "Поиск по запросу: \"{0}\" должен вернуть хотя бы один результат")
     @Tag("BLOCKER")
@@ -42,7 +41,7 @@ public class TestpadSearchTests {
         switchTo().defaultContent();
     }
 
-    // TC_WEB_2: Проверка минимального количества результатов
+
     @CsvSource({
             "Java, 9",
             "Python, 5",
@@ -65,7 +64,7 @@ public class TestpadSearchTests {
         switchTo().defaultContent();
     }
 
-    // TC_WEB_3: Проверка отсутствия результатов при невалидном поиске
+
     @ValueSource(strings = {"asdlkfjweoi", "123!@#", "неттакоготеста"})
     @ParameterizedTest(name = "Поиск по \"{0}\" должен вернуть ноль результатов")
     @Tag("MINOR")
@@ -79,13 +78,12 @@ public class TestpadSearchTests {
         $("div.search-items-results iframe").shouldBe(visible, Duration.ofSeconds(10));
         switchTo().frame($("div.search-items-results iframe"));
 
-        // Проверяем, что результатов нет (коллекция пустая)
         $$(".b-serp-item__title-link").shouldHave(sizeGreaterThan(-1), Duration.ofSeconds(5));
 
         switchTo().defaultContent();
     }
 
-    // TC_WEB_4: Поиск с данными из CSV-файла categories.csv
+
     @ParameterizedTest(name = "Поиск по запросу: \"{0}\" из файла CSV должен вернуть хотя бы один результат")
     @CsvFileSource(resources = "/testdata/categories.csv", numLinesToSkip = 1)
     @DisplayName("TC_WEB_4: Поиск с данными из CSV")
